@@ -16,7 +16,8 @@ llm/
 /llm/
 llm/*
 /test_chroma_db/
-
+/temp/
+/temp/*
 /data/
 /__pycache__/
 *.pyc
