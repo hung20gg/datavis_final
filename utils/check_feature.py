@@ -145,7 +145,7 @@ def power_scaler_col(df, n_jobs = None):
     
     df_result['Mask'] = df_result['Mask_nunique'] & (df_result['Mask_skew'] | df_result['Mask_kurt']) & df_result['Mask_missing']
     
-    df_result['Min_Max'] = ( df_result['Min'] == 0) & (df_result['Max'] < 100) & (df_result['Unique'] < 100)
+    df_result['Min_Max'] = ( df_result['Min'] == 0) & (df_result['Max'] < 50) & (df_result['Unique'] < 50)
     
     df_result
     
