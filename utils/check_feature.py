@@ -135,10 +135,10 @@ def power_scaler_col(df, n_jobs = None):
     df_result['Mask_nunique'] = df_result['Unique'] > 100
     
     # Skewness > 10 -> Power transformation
-    df_result['Mask_skew'] = df_result['Skewness'].abs() > 2
+    df_result['Mask_skew'] = df_result['Skewness'].abs() > 10
     
     # Kurtosis > 15 -> Power transformation
-    df_result['Mask_kurt'] = (df_result['Kurtosis']-3).abs() > 10
+    df_result['Mask_kurt'] = (df_result['Kurtosis']-3).abs() > 15
     
     # Missing > 9/10 dataset -> Scale
     df_result['Mask_missing'] = df_result['Missing'] < 0.9 * df.shape[0]
