@@ -4,6 +4,9 @@ from concurrent.futures import ProcessPoolExecutor
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
+import os 
+
+current_dir = os.path.dirname(__file__)
 
 def analyze_feat(series):
     
@@ -123,22 +126,28 @@ def check_feature(df):
     
     return df_result
 
-def power_scaler_col(df, n_jobs = None):
+def power_scaler_col(df, n_jobs = None, skewness = 8, kurtosis = 50):
     # Return which columns for power transformation, which for standard scaler
     
-    df_num = df.select_dtypes(include=[np.number])
-    df_num.fillna(0, inplace=True)
-    
-    df_result = analyze_df(df, n_jobs)
-    
+    cache_path = os.path.join(current_dir, f'../data/feature_analysis_{df.shape[0]}_{df.shape[1]}.csv')
+    if os.path.exists(cache_path):
+        print('Cache found')
+        df_result = pd.read_csv(cache_path)
+    else:
+
+        df_num = df.select_dtypes(include=[np.number])
+        df_num.fillna(0, inplace=True)
+        df_result = analyze_df(df, n_jobs)
+        df_result.to_csv(cache_path, index=False)
+
     # Nunique < 100 -> Categorical feature -> Scale
     df_result['Mask_nunique'] = df_result['Unique'] > 100
     
     # Skewness > 10 -> Power transformation
-    df_result['Mask_skew'] = df_result['Skewness'].abs() > 8
+    df_result['Mask_skew'] = df_result['Skewness'].abs() > skewness
     
     # Kurtosis > 15 -> Power transformation
-    df_result['Mask_kurt'] = (df_result['Kurtosis']-3).abs() > 50
+    df_result['Mask_kurt'] = (df_result['Kurtosis']-3).abs() > kurtosis
     
     # Missing > 9/10 dataset -> Scale
     df_result['Mask_missing'] = df_result['Missing'] < 0.5 * df.shape[0]
