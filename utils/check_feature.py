@@ -25,7 +25,7 @@ def analyze_feat(series):
         missing = series.isnull().sum()
         
         # Can convert to interger?
-        is_interger = series.apply(lambda x: x.is_integer()).all()
+        is_interger = 0
         
         # Min, max, mean, median, std, unique values
         min_ = series.min()
@@ -126,11 +126,11 @@ def check_feature(df):
     
     return df_result
 
-def power_scaler_col(df, n_jobs = None, skewness = 8, kurtosis = 50):
+def power_scaler_col(df, n_jobs = None, skewness = 8, kurtosis = 50, use_cache = True):
     # Return which columns for power transformation, which for standard scaler
     
-    cache_path = os.path.join(current_dir, f'../data/feature_analysis_{df.shape[0]}_{df.shape[1]}.csv')
-    if os.path.exists(cache_path):
+    cache_path = os.path.join(current_dir, f'../temp/feature_analysis_{df.shape[0]}_{df.shape[1]}.csv')
+    if os.path.exists(cache_path) and use_cache:
         print('Cache found')
         df_result = pd.read_csv(cache_path)
     else:
@@ -154,7 +154,7 @@ def power_scaler_col(df, n_jobs = None, skewness = 8, kurtosis = 50):
     
     df_result['Mask'] = df_result['Mask_nunique'] & (df_result['Mask_skew'] | df_result['Mask_kurt']) & df_result['Mask_missing']
     
-    df_result['Min_Max'] = ( df_result['Min'] == 0) & (df_result['Max'] < 50) & (df_result['Unique'] < 50)
+    df_result['Min_Max'] = ( df_result['Min'] == 0) & (df_result['Max'] < 20) & (df_result['Unique'] < 50) # 50/50
     
     df_result
     
