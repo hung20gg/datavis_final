@@ -17,7 +17,7 @@ def metric(type_, *args):
     raise ValueError(f"Unknown metric type: {type_}")
 
 def train(X_train, y_train): # -> model
-    lr = LogisticRegression(max_iter=1000, class_weight='balanced', random_state=42, n_jobs=1)
+    lr = LogisticRegression(max_iter=1000, class_weight='balanced', random_state=42, n_jobs=-1)
     lr.fit(X_train, y_train) 
 
     return lr 
