@@ -1,8 +1,9 @@
-https://www.kaggle.com/code/shivamb/homecreditrisk-extensive-eda-baseline-0-772#3.-Exploration-of-Bureau-Data
-
 ### Trick lỏ
 
-Power transformer + oversample tăng điểm nhiều vãi
-PCA ok
+- Power transformer + oversample tăng điểm nhiều vãi
+- Fill đúng 0 mean
+- KNN features
+- ...
 
-Raw appl_train + everything - prev_app = 0.53x
+
+### Big feature: file with the highest verson (usually v2 or v4 with bun rieu)
